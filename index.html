@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eaf6f3" />
+    <meta
+      name="description"
+      content="Aqua Pulse รายงานข้อมูลเฝ้าระวังคุณภาพน้ำจากสถานีตรวจวัดชุมชน"
+    />
+    <title>Aqua Pulse | เฝ้าระวังคุณภาพน้ำชุมชน</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Aqua Pulse หน้าหลัก">
+        <span class="brand-mark" aria-hidden="true">AP</span>
+        <span>
+          <strong>Aqua Pulse</strong>
+          <small>เฝ้าระวังคุณภาพน้ำชุมชน</small>
+        </span>
+      </a>
+      <a class="about-link" href="#about">เกี่ยวกับข้อมูลนี้</a>
+    </header>
+
+    <main id="top">
+      <section class="hero shell" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">สถานีตรวจวัดคุณภาพน้ำชุมชน</p>
+          <h1 id="page-title">
+            <span>วันนี้ น้ำของเรา</span>
+            <span>เป็นอย่างไรบ้าง</span>
+          </h1>
+          <p class="hero-intro">
+            ติดตามค่าเฝ้าระวังจากอุปกรณ์ภาคสนาม เพื่อช่วยให้ชุมชนเห็นความเปลี่ยนแปลงได้เร็วขึ้น
+          </p>
+        </div>
+
+        <aside class="overall-card" aria-live="polite">
+          <div class="status-orb" id="status-orb" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="status-label">สถานะข้อมูลล่าสุด</p>
+            <h2 id="overall-status">กำลังตรวจสอบข้อมูล</h2>
+            <p id="overall-message">กรุณารอสักครู่ ระบบกำลังเชื่อมต่อสถานีตรวจวัด</p>
+          </div>
+          <div class="updated-row">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="updated-at">ยังไม่มีเวลาอัปเดต</span>
+          </div>
+        </aside>
+      </section>
+
+      <section class="metrics-section shell" aria-labelledby="metrics-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ค่าจากเซนเซอร์</p>
+            <h2 id="metrics-title">ภาพรวมล่าสุด</h2>
+          </div>
+          <button class="refresh-button" id="refresh-button" type="button">
+            <span aria-hidden="true">↻</span> อัปเดตข้อมูล
+          </button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card" data-metric="ph">
+            <div class="metric-topline">
+              <span class="metric-icon ph-icon" aria-hidden="true">pH</span>
+              <span class="metric-state">รอข้อมูล</span>
+            </div>
+            <p class="metric-name">ความเป็นกรด–ด่าง</p>
+            <p class="metric-value"><strong id="ph-value">—</strong></p>
+            <div class="range-track" aria-hidden="true"><span id="ph-marker"></span></div>
+            <p class="metric-guide">ช่วงอ้างอิง 6.5–8.5</p>
+          </article>
+
+          <article class="metric-card" data-metric="turbidity">
+            <div class="metric-topline">
+              <span class="metric-icon" aria-hidden="true">◌</span>
+              <span class="metric-state">รอข้อมูล</span>
+            </div>
+            <p class="metric-name">ความขุ่น</p>
+            <p class="metric-value"><strong id="turbidity-value">—</strong> <span>NTU</span></p>
+            <div class="range-track" aria-hidden="true"><span id="turbidity-marker"></span></div>
+            <p class="metric-guide">ค่าอ้างอิงไม่เกิน 5 NTU</p>
+          </article>
+
+          <article class="metric-card" data-metric="tds">
+            <div class="metric-topline">
+              <span class="metric-icon" aria-hidden="true">≈</span>
+              <span class="metric-state">รอข้อมูล</span>
+            </div>
+            <p class="metric-name">สารละลายในน้ำ</p>
+            <p class="metric-value"><strong id="tds-value">—</strong> <span>ppm</span></p>
+            <div class="range-track" aria-hidden="true"><span id="tds-marker"></span></div>
+            <p class="metric-guide">ค่าอ้างอิงไม่เกิน 500 ppm</p>
+          </article>
+
+          <article class="metric-card neutral" data-metric="pressure">
+            <div class="metric-topline">
+              <span class="metric-icon" aria-hidden="true">↥</span>
+              <span class="metric-state">ข้อมูลระบบ</span>
+            </div>
+            <p class="metric-name">แรงดันน้ำ</p>
+            <p class="metric-value"><strong id="pressure-value">—</strong> <span>bar</span></p>
+            <div class="range-track" aria-hidden="true"><span id="pressure-marker"></span></div>
+            <p class="metric-guide">ใช้ติดตามการทำงานของระบบน้ำ</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="context-section shell" aria-labelledby="context-title">
+        <div class="context-copy">
+          <p class="eyebrow">อ่านค่าอย่างเข้าใจ</p>
+          <h2 id="context-title">ตัวเลขเหล่านี้บอกอะไรเรา</h2>
+          <p>
+            ระบบนี้เป็นเครื่องมือเฝ้าระวังเบื้องต้น ค่าที่เปลี่ยนแปลงมากหรืออยู่นอกช่วงอ้างอิง
+            ช่วยให้ผู้ดูแลตรวจสอบสถานการณ์ได้เร็วขึ้น
+          </p>
+        </div>
+        <div class="explainer-list">
+          <article>
+            <span>01</span>
+            <div><h3>pH</h3><p>ช่วยบอกว่าน้ำมีความเป็นกรดหรือด่างมากเพียงใด</p></div>
+          </article>
+          <article>
+            <span>02</span>
+            <div><h3>ความขุ่น</h3><p>สะท้อนปริมาณตะกอนหรืออนุภาคแขวนลอยที่เซนเซอร์ตรวจพบ</p></div>
+          </article>
+          <article>
+            <span>03</span>
+            <div><h3>TDS</h3><p>ประมาณปริมาณสารที่ละลายอยู่ในน้ำ เช่น แร่ธาตุและเกลือ</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="disclaimer shell" id="about">
+        <span class="notice-icon" aria-hidden="true">i</span>
+        <div>
+          <h2>ข้อมูลเพื่อการเฝ้าระวัง ไม่ใช่ผลรับรองน้ำดื่ม</h2>
+          <p>
+            ค่าบนเว็บไซต์มาจากเซนเซอร์ภาคสนามและอาจคลาดเคลื่อนได้ การยืนยันความปลอดภัยสำหรับบริโภค
+            ต้องอาศัยการเก็บตัวอย่างและตรวจวิเคราะห์ทางห้องปฏิบัติการ รวมถึงเชื้อจุลินทรีย์และสารปนเปื้อนอื่น
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <div><strong>Aqua Pulse</strong><p>ข้อมูลน้ำที่ทุกคนเข้าถึงและเข้าใจได้</p></div>
+      <p>สถานะอุปกรณ์: <span id="device-status">ไม่ทราบ</span> · Wi‑Fi <span id="wifi-value">—</span> dBm</p>
+    </footer>
+
+    <noscript>เว็บไซต์นี้ต้องเปิดใช้งาน JavaScript เพื่อโหลดข้อมูลล่าสุดจากสถานีตรวจวัด</noscript>
+  </body>
+</html>
