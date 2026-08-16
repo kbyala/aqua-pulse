@@ -43,7 +43,9 @@ a { color: inherit; }
 .brand strong, .brand small { display: block; }
 .brand strong { font-size: 18px; letter-spacing: -.02em; }
 .brand small { color: var(--muted); font-size: 12px; }
-.about-link { color: var(--teal-dark); font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.header-nav { display: flex; align-items: center; gap: 22px; }
+.about-link, .admin-link { color: var(--teal-dark); font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.admin-link { padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; }
 
 .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 8%; align-items: center; padding: 78px 0 92px; }
 .eyebrow { margin: 0 0 16px; color: var(--teal); font-size: 14px; font-weight: 600; line-height: 1.6; }
