@@ -1,5 +1,6 @@
 :root { --ink:#0d2b29; --muted:#627572; --teal:#0f766e; --cream:#f6f5ef; --paper:#fffefa; --line:#d8e4df; --bad:#b83d35; }
 * { box-sizing:border-box; }
+[hidden] { display:none !important; }
 body { margin:0; color:var(--ink); background:var(--cream); font-family:"IBM Plex Sans Thai",system-ui,sans-serif; }
 button,input,select { font:inherit; }
 .login-view { min-height:100vh; padding:32px; display:grid; place-items:center; position:relative; }
