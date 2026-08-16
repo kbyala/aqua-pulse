@@ -1,9 +1,4 @@
-const CONFIG = {
-  // วาง URL ที่ได้จาก Deploy > New deployment > Web app ของ Google Apps Script ที่นี่
-  apiUrl: "",
-  refreshEveryMs: 60_000,
-  staleAfterMs: 10 * 60_000,
-};
+const CONFIG = window.AQUA_CONFIG;
 
 const metricRules = {
   ph: { min: 0, max: 14, good: (v) => v >= 6.5 && v <= 8.5 },

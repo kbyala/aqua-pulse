@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>ระบบผู้ดูแล | Aqua Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="config.js" defer></script>
+    <script src="admin.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section class="login-view" id="login-view">
+        <a class="back-link" href="index.html">← กลับหน้าหลัก</a>
+        <div class="login-card">
+          <span class="logo">AP</span>
+          <p class="eyebrow">Aqua Pulse</p>
+          <h1>เข้าสู่ระบบผู้ดูแล</h1>
+          <p class="muted">สำหรับตรวจสอบข้อมูลย้อนหลังจากสถานีตรวจวัด</p>
+          <form id="login-form">
+            <label>ชื่อผู้ใช้<input id="username" name="username" autocomplete="username" required /></label>
+            <label>รหัสผ่าน<input id="password" name="password" type="password" autocomplete="current-password" required /></label>
+            <p class="form-error" id="login-error" role="alert"></p>
+            <button type="submit">เข้าสู่ระบบ</button>
+          </form>
+          <p class="security-note">ระบบเข้าสู่ระบบนี้เป็นต้นแบบสำหรับทดสอบ ไม่ควรใช้ปกป้องข้อมูลสำคัญ</p>
+        </div>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden>
+        <header class="admin-header">
+          <a class="brand" href="index.html"><span class="logo">AP</span><span><strong>Aqua Pulse</strong><small>ระบบผู้ดูแลข้อมูล</small></span></a>
+          <button class="ghost-button" id="logout-button" type="button">ออกจากระบบ</button>
+        </header>
+
+        <div class="dashboard-shell">
+          <div class="page-heading">
+            <div><p class="eyebrow">ข้อมูลจากสถานี</p><h1>ข้อมูลย้อนหลัง</h1><p class="muted" id="result-summary">กำลังเตรียมข้อมูล</p></div>
+            <button id="reload-button" class="primary-button" type="button">อัปเดตข้อมูล</button>
+          </div>
+
+          <form class="filters" id="filter-form">
+            <label>ตั้งแต่วันที่<input type="date" id="from-date" /></label>
+            <label>ถึงวันที่<input type="date" id="to-date" /></label>
+            <label>จำนวนรายการ<select id="limit"><option>50</option><option selected>100</option><option>250</option><option>500</option></select></label>
+            <button type="submit">ค้นหา</button>
+            <button class="clear-button" id="clear-filter" type="button">ล้างตัวกรอง</button>
+          </form>
+
+          <div class="notice" id="data-notice" role="status">กำลังโหลดข้อมูล…</div>
+          <div class="table-card">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>วันและเวลา</th><th>แรงดัน</th><th>pH</th><th>TDS</th><th>ความขุ่น</th><th>Wi‑Fi</th><th>สถานะ</th></tr></thead>
+                <tbody id="history-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
