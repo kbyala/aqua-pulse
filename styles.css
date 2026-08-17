@@ -104,6 +104,27 @@ a { color: inherit; }
 .metric-card.danger .range-track span { background: var(--bad); }
 .metric-guide { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
 
+.trend-section { padding: 82px 0 92px; border-top: 1px solid var(--line); }
+.trend-heading { display:flex; justify-content:space-between; align-items:end; gap:32px; }
+.trend-heading h2 { margin:0; font-size:clamp(34px,4vw,52px); line-height:1.1; letter-spacing:-.04em; }
+.trend-heading > div:first-child > p:last-child { margin:14px 0 0; color:var(--muted); }
+.trend-tabs { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:7px; }
+.trend-tab { padding:9px 14px; border:1px solid var(--line); border-radius:999px; color:var(--teal-dark); background:var(--paper); font-weight:700; cursor:pointer; }
+.trend-tab.active { border-color:var(--teal); color:white; background:var(--teal); }
+.compare-form { margin:28px 0 14px; padding:16px; display:grid; grid-template-columns:1fr auto 1fr auto; align-items:end; gap:12px; border:1px solid var(--line); border-radius:16px; background:var(--paper); }
+.compare-form label { display:grid; gap:6px; color:#3e5955; font-size:12px; font-weight:700; }
+.compare-form input { min-width:0; width:100%; padding:11px 12px; border:1px solid #c9d8d3; border-radius:10px; color:var(--ink); background:white; font:inherit; }
+.compare-form button { padding:12px 18px; border:0; border-radius:10px; color:white; background:var(--teal); font:inherit; font-weight:700; cursor:pointer; }
+.compare-word { align-self:center; padding-top:18px; color:var(--muted); font-size:13px; }
+.public-chart-card { padding:25px; border:1px solid var(--line); border-radius:22px; background:var(--paper); box-shadow:0 10px 35px rgba(26,70,65,.035); }
+.chart-meta { display:flex; justify-content:space-between; align-items:start; gap:24px; }
+.chart-meta h3 { margin:0; font-size:23px; }.chart-meta p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.chart-legend { display:flex; flex-wrap:wrap; gap:15px; color:#49615e; font-size:12px; }.chart-legend span{display:flex;align-items:center;gap:7px}.chart-legend b{font-weight:600}
+.legend-line { width:24px; height:3px; display:inline-block; border-radius:3px; }.primary-line{background:#0f766e}.compare-line{background:#d18522}
+.public-chart-wrap { position:relative; height:360px; margin-top:20px; }
+#public-history-chart { width:100%; height:100%; display:block; }
+.public-chart-empty { position:absolute; inset:0; margin:0; display:grid; place-items:center; color:var(--muted); background:rgba(255,254,250,.88); }.public-chart-empty[hidden]{display:none}
+
 .context-section { padding: 90px 0; display: grid; grid-template-columns: .85fr 1.15fr; gap: 10%; border-top: 1px solid var(--line); }
 .context-copy > p:last-child { max-width: 460px; margin: 24px 0 0; color: var(--muted); line-height: 1.8; }
 .explainer-list article { padding: 24px 0; display: grid; grid-template-columns: 48px 1fr; gap: 14px; border-bottom: 1px solid var(--line); }
@@ -126,6 +147,7 @@ noscript { display: block; padding: 15px; text-align: center; background: #fff1c
   .overall-card { min-height: 330px; }
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
   .context-section { grid-template-columns: 1fr; gap: 48px; }
+  .trend-heading { display:grid; }.trend-tabs{justify-content:flex-start}.compare-form{grid-template-columns:1fr 1fr}.compare-word{display:none}.compare-form button{grid-column:1/-1}
 }
 @media (max-width: 560px) {
   .shell, .site-header { width: min(100% - 28px, 1160px); }
@@ -144,6 +166,7 @@ noscript { display: block; padding: 15px; text-align: center; background: #fff1c
   .metric-grid { grid-template-columns: 1fr; }
   .metric-card { min-height: 250px; }
   .context-section { padding: 70px 0; }
+  .trend-section { padding:65px 0 70px; }.trend-tabs{display:grid;grid-template-columns:1fr 1fr}.compare-form{grid-template-columns:1fr}.compare-form button{grid-column:auto}.chart-meta{display:grid}.public-chart-wrap{height:290px}
   .disclaimer { padding: 23px; grid-template-columns: 1fr; }
   .site-footer { align-items: start; flex-direction: column; gap: 24px; }
 }

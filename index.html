@@ -15,9 +15,9 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=2" />
     <script src="config.js?v=1" defer></script>
-    <script src="app.js" defer></script>
+    <script src="app.js?v=2" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -118,6 +118,43 @@
             <div class="range-track" aria-hidden="true"><span id="pressure-marker"></span></div>
             <p class="metric-guide">ใช้ติดตามการทำงานของระบบน้ำ</p>
           </article>
+        </div>
+      </section>
+
+      <section class="trend-section shell" aria-labelledby="trend-title">
+        <div class="trend-heading">
+          <div>
+            <p class="eyebrow">เปรียบเทียบข้อมูลย้อนหลัง</p>
+            <h2 id="trend-title">แนวโน้มคุณภาพน้ำ</h2>
+            <p>เปรียบเทียบค่าที่วัดได้ในช่วงเวลาเดียวกันระหว่างสองวัน</p>
+          </div>
+          <div class="trend-tabs" role="group" aria-label="เลือกค่าที่แสดงในกราฟ">
+            <button class="trend-tab active" type="button" data-trend="ph">pH</button>
+            <button class="trend-tab" type="button" data-trend="turbidity">ความขุ่น</button>
+            <button class="trend-tab" type="button" data-trend="tds">TDS</button>
+            <button class="trend-tab" type="button" data-trend="pressure">แรงดัน</button>
+          </div>
+        </div>
+
+        <form class="compare-form" id="compare-form">
+          <label>วันที่หลัก<input id="primary-date" type="date" required /></label>
+          <span class="compare-word">เทียบกับ</span>
+          <label>วันที่เปรียบเทียบ<input id="compare-date" type="date" required /></label>
+          <button type="submit">แสดงกราฟ</button>
+        </form>
+
+        <div class="public-chart-card">
+          <div class="chart-meta">
+            <div><h3 id="public-chart-title">กราฟ pH</h3><p id="public-chart-note">กำลังโหลดข้อมูลย้อนหลัง</p></div>
+            <div class="chart-legend">
+              <span><i class="legend-line primary-line"></i><b id="primary-legend">วันที่หลัก</b></span>
+              <span><i class="legend-line compare-line"></i><b id="compare-legend">วันที่เปรียบเทียบ</b></span>
+            </div>
+          </div>
+          <div class="public-chart-wrap">
+            <canvas id="public-history-chart" role="img" aria-label="กราฟเปรียบเทียบข้อมูลคุณภาพน้ำสองวัน"></canvas>
+            <p id="public-chart-empty" class="public-chart-empty" hidden>ไม่พบข้อมูลในวันที่เลือก</p>
+          </div>
         </div>
       </section>
 

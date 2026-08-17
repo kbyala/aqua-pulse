@@ -17,6 +17,21 @@ const elements = {
   wifiValue: document.querySelector("#wifi-value"),
 };
 
+const publicChart = document.querySelector("#public-history-chart");
+const publicChartEmpty = document.querySelector("#public-chart-empty");
+const publicChartTitle = document.querySelector("#public-chart-title");
+const publicChartNote = document.querySelector("#public-chart-note");
+let comparisonSeries = { primary:[], compare:[] };
+let activeTrend = "ph";
+let publicResizeFrame;
+
+const publicMetrics = {
+  ph: { label:"pH", unit:"", color:"#0f766e", reference:[6.5,8.5] },
+  turbidity: { label:"ความขุ่น", unit:"NTU", color:"#0f766e", reference:[5] },
+  tds: { label:"TDS", unit:"ppm", color:"#0f766e", reference:[500] },
+  pressure: { label:"แรงดันน้ำ", unit:"bar", color:"#0f766e", reference:[] },
+};
+
 function isFiniteReading(value) {
   return Number.isFinite(Number(value));
 }
@@ -40,6 +55,62 @@ function formatTimestamp(value) {
     timeStyle: "short",
     timeZone: "Asia/Bangkok",
   }).format(date)} น.`;
+}
+
+function bangkokDateValue(date) {
+  const parts = new Intl.DateTimeFormat("en-CA", { year:"numeric", month:"2-digit", day:"2-digit", timeZone:"Asia/Bangkok" }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part)=>[part.type,part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function shortThaiDate(value) {
+  const date = new Date(`${value}T12:00:00+07:00`);
+  return new Intl.DateTimeFormat("th-TH", { day:"numeric", month:"short", year:"2-digit", timeZone:"Asia/Bangkok" }).format(date);
+}
+
+function minuteInBangkok(value) {
+  const date = new Date(value);
+  const parts = new Intl.DateTimeFormat("en-GB", { hour:"2-digit", minute:"2-digit", hourCycle:"h23", timeZone:"Asia/Bangkok" }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part)=>[part.type,part.value]));
+  return Number(values.hour)*60+Number(values.minute);
+}
+
+async function fetchDay(dateValue) {
+  const url = new URL(CONFIG.apiUrl);
+  url.searchParams.set("action","history"); url.searchParams.set("from",dateValue); url.searchParams.set("to",dateValue); url.searchParams.set("limit","500");
+  const response = await fetch(url,{cache:"no-store"});
+  if(!response.ok) throw new Error(`HTTP ${response.status}`);
+  const payload = await response.json();
+  if(!payload.success||!Array.isArray(payload.rows)) throw new Error(payload.error||"ไม่พบข้อมูลย้อนหลัง");
+  return payload.rows;
+}
+
+function drawPublicChart() {
+  const metric=publicMetrics[activeTrend];
+  const makePoints=(rows)=>rows.map((row)=>({minute:minuteInBangkok(row.timestamp),value:Number(row[activeTrend])})).filter((point)=>Number.isFinite(point.minute)&&Number.isFinite(point.value)).sort((a,b)=>a.minute-b.minute);
+  const primary=makePoints(comparisonSeries.primary); const compare=makePoints(comparisonSeries.compare); const all=[...primary,...compare];
+  publicChartTitle.textContent=`กราฟ ${metric.label}`; publicChartEmpty.hidden=all.length>0;
+  const rect=publicChart.getBoundingClientRect(); const ratio=Math.min(window.devicePixelRatio||1,2);
+  publicChart.width=Math.max(1,Math.round(rect.width*ratio)); publicChart.height=Math.max(1,Math.round(rect.height*ratio));
+  const context=publicChart.getContext("2d"); context.setTransform(ratio,0,0,ratio,0,0); context.clearRect(0,0,rect.width,rect.height); if(!all.length)return;
+  const padding={top:18,right:18,bottom:42,left:58}; const width=rect.width-padding.left-padding.right; const height=rect.height-padding.top-padding.bottom;
+  const values=all.map((point)=>point.value).concat(metric.reference); let min=Math.min(...values); let max=Math.max(...values); const span=Math.max(max-min,Math.abs(max)*.15,1); min=Math.max(0,min-span*.12); max+=span*.12;
+  const x=(minute)=>padding.left+(minute/1439)*width; const y=(value)=>padding.top+(max-value)/(max-min)*height;
+  context.font='12px "IBM Plex Sans Thai",sans-serif'; context.strokeStyle="#e2e9e6"; context.fillStyle="#627572"; context.lineWidth=1;
+  for(let index=0;index<=4;index+=1){const value=max-(max-min)*(index/4);const position=padding.top+height*(index/4);context.beginPath();context.moveTo(padding.left,position);context.lineTo(rect.width-padding.right,position);context.stroke();context.fillText(formatNumber(value,1),5,position+4);}
+  metric.reference.forEach((value)=>{context.save();context.setLineDash([5,5]);context.strokeStyle="#bda96b";context.beginPath();context.moveTo(padding.left,y(value));context.lineTo(rect.width-padding.right,y(value));context.stroke();context.restore();});
+  const drawLine=(points,color)=>{if(!points.length)return;context.strokeStyle=color;context.lineWidth=2.5;context.lineJoin="round";context.beginPath();points.forEach((point,index)=>{if(index===0)context.moveTo(x(point.minute),y(point.value));else context.lineTo(x(point.minute),y(point.value));});context.stroke();};
+  drawLine(primary,"#0f766e"); drawLine(compare,"#d18522");
+  context.fillStyle="#627572";context.textAlign="center";[0,360,720,1080,1439].forEach((minute)=>context.fillText(minute===1439?"24:00":`${String(Math.floor(minute/60)).padStart(2,"0")}:00`,x(minute),rect.height-13));context.textAlign="start";
+}
+
+async function loadComparison() {
+  if(!CONFIG.apiUrl)return;
+  const primaryDate=document.querySelector("#primary-date").value; const compareDate=document.querySelector("#compare-date").value;
+  if(!primaryDate||!compareDate)return;
+  publicChartNote.textContent="กำลังโหลดข้อมูลย้อนหลัง…";
+  try { const [primary,compare]=await Promise.all([fetchDay(primaryDate),fetchDay(compareDate)]); comparisonSeries={primary,compare}; document.querySelector("#primary-legend").textContent=shortThaiDate(primaryDate); document.querySelector("#compare-legend").textContent=shortThaiDate(compareDate); publicChartNote.textContent=`${primary.length} รายการ เทียบกับ ${compare.length} รายการ`; drawPublicChart(); }
+  catch(error){comparisonSeries={primary:[],compare:[]};publicChartNote.textContent=`โหลดกราฟไม่สำเร็จ: ${error.message}`;drawPublicChart();}
 }
 
 function setMetric(name, value) {
@@ -146,6 +217,12 @@ async function loadLatest() {
   }
 }
 
-elements.refreshButton.addEventListener("click", loadLatest);
+const todayBangkok=bangkokDateValue(new Date()); const yesterdayBangkok=bangkokDateValue(new Date(Date.now()-86400000));
+document.querySelector("#primary-date").value=todayBangkok; document.querySelector("#compare-date").value=yesterdayBangkok;
+document.querySelector("#compare-form").addEventListener("submit",(event)=>{event.preventDefault();loadComparison();});
+document.querySelectorAll(".trend-tab").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll(".trend-tab").forEach((item)=>item.classList.remove("active"));button.classList.add("active");activeTrend=button.dataset.trend;drawPublicChart();}));
+window.addEventListener("resize",()=>{cancelAnimationFrame(publicResizeFrame);publicResizeFrame=requestAnimationFrame(drawPublicChart);});
+elements.refreshButton.addEventListener("click",()=>{loadLatest();loadComparison();});
 loadLatest();
+loadComparison();
 setInterval(loadLatest, CONFIG.refreshEveryMs);
