@@ -26,6 +26,18 @@ button { border:0; cursor:pointer; }
 .filters { margin:34px 0 22px; padding:20px; display:grid; grid-template-columns:repeat(3,1fr) auto auto; align-items:end; gap:12px; border:1px solid var(--line); border-radius:16px; background:var(--paper); }
 .filters .clear-button { color:var(--teal); background:#e5f2ee; }
 .notice { margin-bottom:12px; color:var(--muted); font-size:13px; }.notice.error{color:var(--bad)}
+.chart-card { margin-bottom:20px; padding:24px; border:1px solid var(--line); border-radius:18px; background:var(--paper); }
+.chart-heading { display:flex; align-items:start; justify-content:space-between; gap:24px; }
+.chart-kicker { margin:0 0 3px; color:var(--teal); font-size:12px; font-weight:700; }
+.chart-heading h2 { margin:0; font-size:24px; }
+.chart-heading p:last-child { margin:5px 0 0; color:var(--muted); font-size:13px; }
+.chart-tabs { display:flex; flex-wrap:wrap; gap:7px; }
+.chart-tab { padding:8px 13px; border:1px solid var(--line); border-radius:999px; color:var(--teal); background:white; font-size:12px; font-weight:700; }
+.chart-tab.active { border-color:var(--teal); color:white; background:var(--teal); }
+.chart-wrap { position:relative; height:330px; margin-top:24px; }
+#history-chart { width:100%; height:100%; display:block; }
+.chart-empty { position:absolute; inset:0; margin:0; display:grid; place-items:center; color:var(--muted); background:rgba(255,254,250,.85); }
+.chart-empty[hidden] { display:none; }
 .table-card { overflow:hidden; border:1px solid var(--line); border-radius:18px; background:var(--paper); }
 .table-scroll { overflow:auto; }
 table { width:100%; min-width:850px; border-collapse:collapse; font-size:14px; }
@@ -34,5 +46,5 @@ th { position:sticky; top:0; color:#4b625f; background:#eef5f2; font-size:12px; 
 tbody tr:hover { background:#fafcfb; }
 .status-pill { padding:4px 9px; border-radius:999px; color:#176653; background:#dff3eb; font-size:11px; font-weight:700; }
 .status-pill.offline { color:#914039; background:#fde7e4; }
-@media(max-width:800px){.filters{grid-template-columns:1fr 1fr}.filters label:last-of-type{grid-column:1/-1}.page-heading{align-items:start}.dashboard-shell{padding-top:40px}}
+@media(max-width:800px){.filters{grid-template-columns:1fr 1fr}.filters label:last-of-type{grid-column:1/-1}.page-heading{align-items:start}.dashboard-shell{padding-top:40px}.chart-heading{display:grid}.chart-wrap{height:280px}}
 @media(max-width:520px){.login-view{padding:18px}.login-card{padding:28px}.back-link{top:18px;left:18px}.filters{grid-template-columns:1fr}.filters label:last-of-type{grid-column:auto}.page-heading{display:grid}.primary-button{width:100%}.admin-header{padding:0 18px}}

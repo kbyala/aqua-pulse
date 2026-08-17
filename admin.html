@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="admin.css?v=2" />
+    <link rel="stylesheet" href="admin.css?v=3" />
     <script src="config.js?v=1" defer></script>
-    <script src="admin.js?v=2" defer></script>
+    <script src="admin.js?v=3" defer></script>
   </head>
   <body>
     <main>
@@ -52,6 +52,25 @@
           </form>
 
           <div class="notice" id="data-notice" role="status">กำลังโหลดข้อมูล…</div>
+          <section class="chart-card" aria-labelledby="chart-title">
+            <div class="chart-heading">
+              <div>
+                <p class="chart-kicker">แนวโน้มตามเวลา</p>
+                <h2 id="chart-title">กราฟ pH</h2>
+                <p id="chart-description">แสดงการเปลี่ยนแปลงของค่า pH จากข้อมูลที่เลือก</p>
+              </div>
+              <div class="chart-tabs" role="group" aria-label="เลือกข้อมูลในกราฟ">
+                <button class="chart-tab active" type="button" data-chart="ph">pH</button>
+                <button class="chart-tab" type="button" data-chart="turbidity">ความขุ่น</button>
+                <button class="chart-tab" type="button" data-chart="tds">TDS</button>
+                <button class="chart-tab" type="button" data-chart="pressure">แรงดัน</button>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="history-chart" role="img" aria-label="กราฟข้อมูลย้อนหลัง"></canvas>
+              <p class="chart-empty" id="chart-empty" hidden>ไม่มีข้อมูลสำหรับสร้างกราฟ</p>
+            </div>
+          </section>
           <div class="table-card">
             <div class="table-scroll">
               <table>
